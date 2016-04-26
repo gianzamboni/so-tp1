@@ -92,20 +92,31 @@ void procesoPesado(int pid, std::vector<int> params){
  *********************************************************************************************************************
  *********************************************************************************************************************/
 
-bool esAceptable(int val, std::vector<int>* v){
-	for(uint j = 0; j < v->size()-1; j++){
-		if((*v)[j-1] + 2 < val && val + 2 < (*v)[j+1]){
-			return true;
+bool esAceptable(int val, std::vector<int>* v, int i) {
+	bool res = false;
+	for(uint j = 0; j < i; j++) {
+		if (j == 0) {
+			if (val+2 < (*v)[j+1]) {
+				res =  true;
+			}
+		} else if (j < i-1) {
+			if((*v)[j-1] + 2 < val && val + 2 < (*v)[j+1]) {
+				res = true;
+			}
+		}
+		else {
+			if ((*v)[j-1] + 2) {
+				res = true;
+			}
 		}
 	}
-	if((*v)[v->size()-1] + 2 < val) return true;
-	return false;
-}
+	return res;
+}	
 
 void fillWithOrderedRands(vector<int>* v, int maxValue){
 	vector<int>::iterator it = v->begin();
 	cout << "el vector inicia con tamaño " << v->size() << endl;
-	for (uint i = 0; i < v->size(); i++){
+	for (uint i = 0; i < v->size(); i++) {
 		cout << "el vector tiene tamaño " << v->size() << endl;
 		int val = dameRandEntre(0, maxValue);
 		cout << "se quiere insertar el random: " << val << endl;
@@ -128,7 +139,7 @@ void fillWithOrderedRands(vector<int>* v, int maxValue){
 			cout << "yay! ya ubique al segundo y lo asigne" << endl;
 		} else {
 			cout << "ubico uno mas" << endl;
-			while(!esAceptable(val,v)){
+			while(!esAceptable(val,v, i)) {
 				cout << val << "no es aceptable" << endl;
 				val = dameRandEntre(0, maxValue);
 			}
@@ -155,19 +166,16 @@ bool usado(vector<int>* v, int k){
 }
 
 void TaskBatch(int pid, std::vector<int> params) {  // params: total_cpu, cant_bloqueos
-int total_cpu = params[0];
-  int cant_bloqueos = params[1];
-  vector<int> bloqueos(cant_bloqueos); 
-  cout << "#Eligiendo intervalos" << endl;
-  fillWithOrderedRands(&bloqueos, total_cpu);
-  cout << "#Intervalos elegidos" << endl;	
-  int cpu_usado = 0;
-  cout << "TODO MUERE A PARTIR DE ACÁ" << endl;
-  for(int i = 0; i < cant_bloqueos; i++){
-    uso_CPU(pid, bloqueos[i] - cpu_usado);
-    cpu_usado += bloqueos[i];
-    uso_IO(pid, 2);
-  }
+	int total_cpu = params[0];
+	int cant_bloqueos = params[1];
+  	vector<int> bloqueos(cant_bloqueos); 
+  	fillWithOrderedRands(&bloqueos, total_cpu);	
+  	int cpu_usado = 0;
+  	for(int i = 0; i < cant_bloqueos; i++){
+   		uso_CPU(pid, bloqueos[i] - cpu_usado);
+   		cpu_usado += bloqueos[i];
+   		uso_IO(pid, 2);
+  	}
   return;
 }
 
@@ -184,5 +192,4 @@ void tasks_init(void) {
 	register_task(usuario3, -1);
 	register_task(procesoPesado, -1);
 	register_task(TaskBatch, 2);
-
 }
