@@ -20,8 +20,8 @@ class SchedRR : public SchedBase {
 	// los recibe en orden en cantidad de cores
 		std::vector<int> quantumes;
 		std::vector<int> cuentaQuantumes;
-		
-		int getNextTask();
+
+		int getNextTask(int cpu);
 		bool noQuantumLeft(int currentCore);
 };
 
