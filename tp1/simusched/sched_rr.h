@@ -17,7 +17,12 @@ class SchedRR : public SchedBase {
 		std::queue<int> q;
 		std::deque<int> blockedTasks;
 
+	// los recibe en orden en cantidad de cores
+		std::vector<int> quantumes;
+		std::vector<int> cuentaQuantumes;
+		
 		int getNextTask();
+		bool noQuantumLeft(int currentCore);
 };
 
 #endif
