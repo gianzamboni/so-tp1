@@ -4,3 +4,5 @@ TaskCPU 200
 TaskCPU 50
 @30:
 TaskCPU 50
+@15:
+TaskCPU 70

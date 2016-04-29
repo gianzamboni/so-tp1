@@ -11,8 +11,6 @@ SchedRR::SchedRR(vector<int> argn) {
 	cuentaQuantumes = vector<int>(argn[0]);
 	quantumes = vector<int>(argn[0]);
 
-	load(IDLE_TASK);
-
 	for(int i = 0; i < argn.size()-2; i++){
 		cuentaQuantumes[i] = argn[i+2];
 		cout << "Se carga el quantum " << argn[i+2] << " para el core " << i << endl;
@@ -27,6 +25,7 @@ SchedRR::~SchedRR() {
 
 void SchedRR::load(int pid) {
 	q.push(pid);
+	cout << "Loading task #" << pid << endl;
 }
 
 void SchedRR::unblock(int pid) {
@@ -40,34 +39,31 @@ void SchedRR::unblock(int pid) {
 }
 
 int SchedRR::tick(int cpu, const enum Motivo m) {
-	cuentaQuantumes[cpu]--;
-		cout << "quantum decrease: new quantum is " << cuentaQuantumes[cpu] << endl;
-	if (current_pid(cpu) == IDLE_TASK || m == EXIT ) {
-		getNextTask(cpu);
-	} else if(m == TICK && noQuantumLeft(cpu)) {
+	if (current_pid(cpu) == IDLE_TASK || m == EXIT) {
+		cuentaQuantumes[cpu] = quantumes[cpu];
+		return getNextTask(cpu);
+	} else if (m == TICK && noQuantumLeft(cpu)) {
 		cout << "no quantum left" << endl;
 		q.push(current_pid(cpu));
 		cuentaQuantumes[cpu] = quantumes[cpu];
-		return getNextTask(cpu);
-	} else if(m == BLOCK) {
-		blockedTasks.insert(blockedTasks.begin(), current_pid(cpu));
+		cout << "quantum reinit: new quantum is " << cuentaQuantumes[cpu] << endl;
 		return getNextTask(cpu);
 	} else {
-		return  current_pid(cpu);
+		cuentaQuantumes[cpu]--;
+		cout << "Tick for process " << current_pid(cpu) << " quantum decrease: new quantum is " << cuentaQuantumes[cpu] << endl;
+		return current_pid(cpu);
 	}
 }
 
 int SchedRR::getNextTask(int cpu){
-	int sig = q.front();
-	q.pop();
+	if (q.empty()) {
+		return IDLE_TASK;
+	} else {
+		int sig = q.front();
+		q.pop();
 	cout << "next task number: " << sig << endl;
-	if(sig == IDLE_TASK && !q.empty()) {
-		q.push(sig);
-		sig = q.front();
-		if (sig != IDLE_TASK) q.pop();
-		cout << "quantum reinit: new quantum is " << cuentaQuantumes[cpu] << endl;
+		return sig;
 	}
-	return sig;
 }
 
 bool SchedRR::noQuantumLeft(int currentCore) {
