@@ -29,12 +29,11 @@ void SchedRR::load(int pid) {
 }
 
 void SchedRR::unblock(int pid) {
-	// deque<int>::iterator it = blockedTasks.begin();
-	// for (; it!=blockedTasks.end(); ++it){
-	// 	if(*it != pid) break;
-	// };
-
-	// blockedTasks.erase(it);
+	deque<int>::iterator it = blockedTasks.begin();
+	for (; it != blockedTasks.end(); it++) {
+		if(*it == pid) break;
+	}
+	blockedTasks.erase(it);
 	q.push(pid);
 }
 
@@ -47,6 +46,9 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 		q.push(current_pid(cpu));
 		cuentaQuantumes[cpu] = quantumes[cpu];
 		cout << "quantum reinit: new quantum is " << cuentaQuantumes[cpu] << endl;
+		return getNextTask(cpu);
+	} else if (m == BLOCK) {
+		blockedTasks.insert(blockedTasks.begin(), current_pid(cpu));
 		return getNextTask(cpu);
 	} else {
 		cuentaQuantumes[cpu]--;
