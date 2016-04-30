@@ -27,7 +27,12 @@ int dameRandEntre(int bmin, int bmax){
  	sleep(1);
  	cout << "rango [" << bmin << "; " << bmax << "]" << endl;
  	int module = (bmax - bmin);
-	int nr = rand() %  module + bmin;
+ 	int nr;
+ 	if (module == 0) {
+		nr = bmin;
+ 	} else {
+		nr = rand() %  module + bmin;
+ 	}
  	cout << "numero random: " << nr << endl;
 	return nr;
 }
