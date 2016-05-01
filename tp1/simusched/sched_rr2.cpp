@@ -21,8 +21,8 @@ SchedRR2::SchedRR2(vector<int> argn) {
 
 	for(int i = 0; i < argn.size()-2; i++){
 		cuentaQuantumes[i] = argn[i+2];
-		cout << "Se carga el quantum " << argn[i+2] << " para el core " << i << endl;
-		quantumes[i] = argn[i+2];
+		cout << "Se carga el quantum " << argn[i+2]-1 << " para el core " << i << endl;
+		quantumes[i] = argn[i+2]-1;
 	}
 
 }
@@ -95,7 +95,6 @@ int SchedRR2::minQueue() {
 	for (int i = 0; i < cores; i++) {
 		cout << "amount of current tasks in core " << i << " is " << tasksPerCore[i] << endl;
 		if (tasksPerCore[i] < tasksPerCore[min]) {
-			cout << "tasksPerCore[i] in core "<< i << " evaluates to " << tasksPerCore[i] << " < " << tasksPerCore[min] << "min" << endl;
 			min = i;
 		}
 		cout << "min is " << min << endl;

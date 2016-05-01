@@ -192,9 +192,9 @@ void tasks_init(void) {
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
 	register_task(TaskConsola, 3);
-	register_task(usuario1, -1);
-	register_task(usuario2, -1);
-	register_task(usuario3, -1);
-	register_task(procesoPesado, -1);
+	register_task(usuario1, 0);
+	register_task(usuario2, 0);
+	register_task(usuario3, 0);
+	register_task(procesoPesado, 0);
 	register_task(TaskBatch, 2);
 }
