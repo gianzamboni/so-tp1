@@ -12,11 +12,12 @@ SchedRR2::SchedRR2(vector<int> argn) {
 	
 	cores = argn[0];
 
+	cout << "Number of cores: " << cores << endl;
 	cuentaQuantumes = vector<int>(cores);
 	quantumes = vector<int>(cores);
 	blockedTasks = vector<deque<int> >(cores, deque<int>());
 	readyTasks = vector<deque<int> >(cores, deque<int>());
-	tasksPerCore= vector<int>(cores, 0);
+	tasksPerCore = vector<int>(cores, 0);
 
 	for(int i = 0; i < argn.size()-2; i++){
 		cuentaQuantumes[i] = argn[i+2];
@@ -90,13 +91,14 @@ bool SchedRR2::noQuantumLeft(int currentCore) {
 }
 
 int SchedRR2::minQueue() {
-	int min = tasksPerCore[0];
-	cout << "amount of current tasks in core " << 0 << " is " << min << endl;
-	for (int i = 1; i < cores; i++) {
+	int min = 0;
+	for (int i = 0; i < cores; i++) {
 		cout << "amount of current tasks in core " << i << " is " << tasksPerCore[i] << endl;
-		if (tasksPerCore[i] < min) {
+		if (tasksPerCore[i] < tasksPerCore[min]) {
+			cout << "tasksPerCore[i] in core "<< i << " evaluates to " << tasksPerCore[i] << " < " << tasksPerCore[min] << "min" << endl;
 			min = i;
 		}
+		cout << "min is " << min << endl;
 	}
 	cout << "The min queue is " << min << endl;
 	return min;
