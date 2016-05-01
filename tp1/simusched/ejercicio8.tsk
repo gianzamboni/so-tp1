@@ -4,3 +4,5 @@ TaskCPU 20
 TaskCPU 30
 @10:
 TaskCPU 30
+@0:
+TaskAlterno 15

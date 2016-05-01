@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include "basesched.h"
+using namespace std;
 
 class SchedNoMistery : public SchedBase {
   public:
@@ -13,10 +14,12 @@ class SchedNoMistery : public SchedBase {
     virtual int tick(int cpu, const enum Motivo m);  
 
   private:
+  	deque<int> blockedTasks;
   	deque<int> taskDequeue;
   	deque<int> quantums;
 	int nextTask(int cpu);
 	bool noQuantumLeft(int currentCore);
+	int lastQuantum;
 };
 
 #endif
