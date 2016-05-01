@@ -97,25 +97,13 @@ void procesoPesado(int pid, std::vector<int> params){
  *********************************************************************************************************************
  *********************************************************************************************************************/
 
-bool esAceptable(int val, std::vector<int>* v, int i) {
-	bool res = false;
+bool isAcceptable(int val, std::vector<int>* v, int i) {
 	for(uint j = 0; j < i; j++) {
-		if (j == 0) {
-			if (val+2 < (*v)[j+1]) {
-				res =  true;
-			}
-		} else if (j < i-1) {
-			if((*v)[j-1] + 2 < val && val + 2 < (*v)[j+1]) {
-				res = true;
-			}
-		}
-		else {
-			if ((*v)[j-1] + 2) {
-				res = true;
-			}
-		}
+		if( !(val < (*v)[j]-2 || val > (*v)[j]+3)) {
+			return false;
+		} 
 	}
-	return res;
+	return true;
 }	
 
 void fillWithOrderedRands(vector<int>* v, int maxValue){
@@ -144,17 +132,22 @@ void fillWithOrderedRands(vector<int>* v, int maxValue){
 			cout << "yay! ya ubique al segundo y lo asigne" << endl;
 		} else {
 			cout << "ubico uno mas" << endl;
-			while(!esAceptable(val,v, i)) {
+			while(!isAcceptable(val,v, i)) {
 				cout << val << "no es aceptable" << endl;
 				val = dameRandEntre(0, maxValue);
 			}
 			(*v)[i] = val;
-			cout << "ya ubique uno mas" << endl;
+			cout << "ya ubique el " << i << "-esimo" << endl;
 		}
 		cout << "ordeno" << endl;
-		sort(v->begin(), it);
-		it++;
+		sort(v->begin(), ++it);
+		cout << "El vector es: {"; 
+		for (std::vector<int>::const_iterator it2 = v->begin(); it2 != v->end(); ++it2) cout << *it2 << ' ';
+		cout << "}" << endl;
 	}
+	sort(v->begin(), v->end());
+	cout << "Ya ordene todo" << endl;
+	return;
 }
 
 
@@ -174,11 +167,14 @@ void TaskBatch(int pid, std::vector<int> params) {  // params: total_cpu, cant_b
 	int total_cpu = params[0];
 	int cant_bloqueos = params[1];
   	vector<int> bloqueos(cant_bloqueos); 
-  	fillWithOrderedRands(&bloqueos, total_cpu);	
+  	fillWithOrderedRands(&bloqueos, total_cpu);
+  	cout << "Hola, soy el proces con pid " << pid << " y ya decidi cuando voy a bloquearme" << endl; 
   	int cpu_usado = 0;
   	for(int i = 0; i < cant_bloqueos; i++){
-   		uso_CPU(pid, bloqueos[i] - cpu_usado);
-   		cpu_usado += bloqueos[i];
+  		int cpu_a_usar = bloqueos[i] - cpu_usado;
+  		cout << "El primer bloqueo es en el tick " << bloqueos[i] << ", asi que voy a usar " << cpu_a_usar << " antes de bloquearme" << endl;
+   		uso_CPU(pid, cpu_a_usar);
+   		cpu_usado += cpu_a_usar;
    		uso_IO(pid, 2);
   	}
   return;
