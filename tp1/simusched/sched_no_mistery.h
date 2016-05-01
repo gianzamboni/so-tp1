@@ -14,11 +14,11 @@ class SchedNoMistery : public SchedBase {
     virtual int tick(int cpu, const enum Motivo m);  
 
   private:
-  	deque<int> blockedTasks;
-  	deque<int> taskDequeue;
-  	deque<int> quantums;
-	int nextTask(int cpu);
-	bool noQuantumLeft(int currentCore);
+  	vector<deque<int> > readyTasks;
+  	vector<int> quantums;
+	 
+    int nextTask(int cpu);
+	  bool noQuantumLeft(int currentCore);
 	int lastQuantum;
 };
 

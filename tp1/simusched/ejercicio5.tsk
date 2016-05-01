@@ -1,10 +1,10 @@
 @0:
-TaskCPU 10
+TaskCPU 70
+@0:
+TaskCPU 70
+@0:
+TaskCPU 70
 @0:
 TaskConsola 3 3 3
-@0:
-TaskCPU 15
-@0:
-TaskCPU 20
 @0:
 TaskConsola 3 3 3

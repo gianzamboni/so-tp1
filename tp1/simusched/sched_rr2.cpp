@@ -19,10 +19,10 @@ SchedRR2::SchedRR2(vector<int> argn) {
 	readyTasks = vector<deque<int> >(cores, deque<int>());
 	tasksPerCore = vector<int>(cores, 0);
 
-	for(int i = 0; i < argn.size()-2; i++){
-		cuentaQuantumes[i] = argn[i+2];
-		cout << "Se carga el quantum " << argn[i+2]-1 << " para el core " << i << endl;
-		quantumes[i] = argn[i+2]-1;
+	for(int i = 0; i < argn.size()-1; i++){
+		cuentaQuantumes[i] = argn[i+1]-1;
+		cout << "Se carga el quantum " << argn[i+1]-1 << " para el core " << i << endl;
+		quantumes[i] = argn[i+1]-1;
 	}
 
 }
