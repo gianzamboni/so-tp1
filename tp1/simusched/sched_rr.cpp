@@ -13,8 +13,8 @@ SchedRR::SchedRR(vector<int> argn) {
 
 	for(int i = 0; i < argn.size()-2; i++){
 		cuentaQuantumes[i] = argn[i+2];
-		cout << "Se carga el quantum " << argn[i+2] << " para el core " << i << endl;
-		quantumes[i] = argn[i+2];
+		cout << "Se carga el quantum " << argn[i+2]-1 << " para el core " << i << endl;
+		quantumes[i] = argn[i+2]-1;
 	}
 }
 
