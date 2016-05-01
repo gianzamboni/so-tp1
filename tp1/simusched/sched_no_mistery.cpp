@@ -2,20 +2,20 @@
 #include <queue>
 #include "sched_no_mistery.h"
 #include "basesched.h"
-
+#include <iostream>
 using namespace std;
 
 SchedNoMistery::SchedNoMistery(vector<int> argn) {
-/*	quantums.push_back(1);
-	for(int i = 1; i < argn.size()-2; i++){
-		quantums.push_back(argn[i+2]);
-	}*/
-	  
+	readyTasks = vector<deque<int> >(argn.size(), deque<int>());
+  	quantums = vector<int>(argn.begin(), argn.end());
+  	nexQueueToPush = 0;
+  	lastQueuePoped = 0;
+  	resetQuantum();
 }
 
-void SchedNoMistery::load(int pid) {  
-	/*taskDequeue.push_front(pid);
-	cout << "Loading task #" << pid << endl;*/
+void SchedNoMistery::load(int pid) {
+	readyTasks[0].push_back(pid);
+	cout << "Loading task #" << pid << endl;
 }
 
 void SchedNoMistery::unblock(int pid) {  
@@ -28,36 +28,55 @@ void SchedNoMistery::unblock(int pid) {
 }
 
 int SchedNoMistery::tick(int cpu, const enum Motivo m) {  
-/*	if (current_pid(cpu) == IDLE_TASK || m == EXIT) {
-		cuentaQuantumes[cpu] = quantumes[cpu];
-		return nextTask(cpu);
-	} else if (m == TICK && noQuantumLeft(cpu)) {
+	if (current_pid(cpu) == IDLE_TASK || m == EXIT) {
+		return nextTask();
+	} else if (m == TICK && noQuantumLeft()) {
 		cout << "no quantum left" << endl;
-		taskDequeue.push_back(current_pid(cpu));
-		cuentaQuantumes[cpu] = quantumes[cpu];
-		cout << "quantum reinit: new quantum is " << cuentaQuantumes[cpu] << endl;
-		return nextTask(cpu);
+		pushToCertainQueue(current_pid(cpu), lastQueuePoped, 0);
+		return nextTask();
 	} else if (m == BLOCK) {
-		blockedTasks.insert(blockedTasks.begin(), current_pid(cpu));
-		return nextTask(cpu);
+		// blockedTasks.insert(blockedTasks.begin(), current_pid(cpu));
+		// return nextTask(cpu);
 	} else {
-		cuentaQuantumes[cpu]--;
-		cout << "Tick for process " << current_pid(cpu) << " quantum decrease: new quantum is " << cuentaQuantumes[cpu] << endl;
+		quantumCounter--;
+		cout << "Tick for process " << current_pid(cpu) << " quantum decrease: new quantum is " << quantumCounter << endl;
 		return current_pid(cpu);
-	}*/
+	}
+
+	return -1;
 }
 
-int SchedNoMistery::nextTask(int cpu){
-/*	if (taskDequeue.empty()) {
-		return IDLE_TASK	;
-	} else {
-		int next = taskDequeue.front();
-		taskDequeue.pop_front();
+int SchedNoMistery::nextTask(){
+	lastQueuePoped = getNextQueueToBePoped();
+	if(lastQueuePoped == -1) return IDLE_TASK;
+	resetQuantum();
+	int next = readyTasks[lastQueuePoped].front();
+	readyTasks[lastQueuePoped].pop_front();
 	cout << "next task number: " << next << endl;
-		return next;
-	*/}
+	return next;
+	
+	}
 
-bool SchedNoMistery::noQuantumLeft(int currentTick){
-	/*return cuentaQuantumes[currentTick] == 0;
-	*/
+bool SchedNoMistery::noQuantumLeft(){
+	return quantumCounter == 0;
 }
+
+int SchedNoMistery::getNextQueueToBePoped(){
+	int i = 0;
+	for(; i < readyTasks.size(); i++){
+		if(!readyTasks[i].empty()) return i;
+	}
+	if(i = readyTasks.size()) return -1;
+};
+
+void SchedNoMistery::resetQuantum(){
+	quantumCounter = quantums[lastQueuePoped]-1;
+}
+
+void SchedNoMistery::pushToCertainQueue(int pid, int lastPriority, bool wasBlocked){
+	if(wasBlocked){}
+	else {
+		if(lastPriority == quantums.size()-1) readyTasks[lastPriority].push_back(pid);
+		else readyTasks[++lastPriority].push_back(pid);
+	}
+};

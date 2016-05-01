@@ -174,7 +174,7 @@ void TaskBatch(int pid, std::vector<int> params) {  // params: total_cpu, cant_b
   		int cpu_a_usar = bloqueos[i] - cpu_usado;
   		cout << "El primer bloqueo es en el tick " << bloqueos[i] << ", asi que voy a usar " << cpu_a_usar << " antes de bloquearme" << endl;
    		uso_CPU(pid, cpu_a_usar);
-   		cpu_usado += cpu_a_usar;
+   		cpu_usado += cpu_a_usar	;
    		uso_IO(pid, 2);
   	}
   return;

@@ -16,10 +16,14 @@ class SchedNoMistery : public SchedBase {
   private:
   	vector<deque<int> > readyTasks;
   	vector<int> quantums;
-	 
-    int nextTask(int cpu);
-	  bool noQuantumLeft(int currentCore);
-	int lastQuantum;
+	  int quantumCounter;
+    int nexQueueToPush;
+    int lastQueuePoped;
+    int nextTask();
+	  bool noQuantumLeft();
+    int getNextQueueToBePoped();
+    void resetQuantum();
+    void pushToCertainQueue(int pid, int lastPriority, bool wasBloqued);
 };
 
 #endif
