@@ -25,8 +25,10 @@ clean:
 
 new: clean all
 
-TPear: ejercicio1 ejercicio2 ejercicio3 ejercicio4 ejercicio5 ejercicio6 ejercicio7 ejercicio8 
+TPear: make ejercicio1 ejercicio2 ejercicio3 ejercicio4 ejercicio5 ejercicio6 ejercicio7 ejercicio8 
 
+make:
+	make
 ejercicio1:
 	./simusched -v ejercicio1.tsk 1 1 1 SchedFCFS 0 | python graphsched.py > ej1.png
 ejercicio2:
@@ -52,5 +54,7 @@ ejercicio7:
 	./simusched -v ejercicio7alt.tsk 1 1 1 SchedMistery 5 2 3 | python graphsched.py > ej7_ALT2.png
 	./simusched -v ejercicio7alt.tsk 1 1 1 SchedNoMistery 5 2 3 | python graphsched.py > ej7_ALTNoMistery.png
 ejercicio8:
-	./simusched -v ejercicio8.tsk 2 1 10 SchedRR2 3 5 | python graphsched.py > ej8RR2.png
-	./simusched -v ejercicio8.tsk 2 1 10 SchedRR 3 5 | python graphsched.py > ej8RR1.png
+	./simusched -v ejercicio8.tsk 2 1 10 SchedRR2 4 8 | python graphsched.py > ej8RR2a.png
+	./simusched -v ejercicio8.tsk 2 1 10 SchedRR 4 8 | python graphsched.py > ej8RR1a.png
+	./simusched -v ejercicio8.tsk 2 1 10 SchedRR2 100 2 | python graphsched.py > ej8RR2b.png
+	./simusched -v ejercicio8.tsk 2 1 10 SchedRR 100 2 | python graphsched.py > ej8RR1b.png
