@@ -8,6 +8,8 @@ using namespace std;
 SchedNoMistery::SchedNoMistery(vector<int> argn) {
 	readyTasks = vector<deque<int> >(argn.size(), deque<int>());
   	quantums = vector<int>(argn.begin(), argn.end());
+  	blockedTasks = deque<int>();
+  	blockedTasksPriority = deque<int>();
   	nexQueueToPush = 0;
   	lastQueuePoped = 0;
   	resetQuantum();
@@ -19,12 +21,15 @@ void SchedNoMistery::load(int pid) {
 }
 
 void SchedNoMistery::unblock(int pid) {  
-	/*deque<int>::iterator it = blockedTasks.begin();
+	deque<int>::iterator itp = blockedTasksPriority.begin();
+	deque<int>::iterator it = blockedTasks.begin();
 	for (; it != blockedTasks.end(); it++) {
 		if(*it == pid) break;
+		itp++;
 	}
+	pushToCertainQueue(*it, *itp, 1);
 	blockedTasks.erase(it);
-	taskDequeue.push_front(pid);*/
+	blockedTasksPriority.erase(itp);
 }
 
 int SchedNoMistery::tick(int cpu, const enum Motivo m) {  
@@ -35,8 +40,8 @@ int SchedNoMistery::tick(int cpu, const enum Motivo m) {
 		pushToCertainQueue(current_pid(cpu), lastQueuePoped, 0);
 		return nextTask();
 	} else if (m == BLOCK) {
-		// blockedTasks.insert(blockedTasks.begin(), current_pid(cpu));
-		// return nextTask(cpu);
+		blockTask(current_pid(cpu));
+		return nextTask();
 	} else {
 		quantumCounter--;
 		cout << "Tick for process " << current_pid(cpu) << " quantum decrease: new quantum is " << quantumCounter << endl;
@@ -44,6 +49,11 @@ int SchedNoMistery::tick(int cpu, const enum Motivo m) {
 	}
 
 	return -1;
+}
+
+void SchedNoMistery::blockTask(int pid){
+	blockedTasks.push_back(pid);
+	blockedTasksPriority.push_back(lastQueuePoped);
 }
 
 int SchedNoMistery::nextTask(){
@@ -74,7 +84,10 @@ void SchedNoMistery::resetQuantum(){
 }
 
 void SchedNoMistery::pushToCertainQueue(int pid, int lastPriority, bool wasBlocked){
-	if(wasBlocked){}
+	if(wasBlocked){
+		if(lastPriority == 0) readyTasks[0].push_back(pid);
+		else readyTasks[--lastPriority].push_back(pid);
+	}
 	else {
 		if(lastPriority == quantums.size()-1) readyTasks[lastPriority].push_back(pid);
 		else readyTasks[++lastPriority].push_back(pid);

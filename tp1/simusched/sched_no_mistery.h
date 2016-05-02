@@ -16,6 +16,9 @@ class SchedNoMistery : public SchedBase {
   private:
   	vector<deque<int> > readyTasks;
   	vector<int> quantums;
+    deque<int> blockedTasks;
+    deque<int> blockedTasksPriority;
+
 	  int quantumCounter;
     int nexQueueToPush;
     int lastQueuePoped;
@@ -24,6 +27,7 @@ class SchedNoMistery : public SchedBase {
     int getNextQueueToBePoped();
     void resetQuantum();
     void pushToCertainQueue(int pid, int lastPriority, bool wasBloqued);
+    void blockTask(int pid);
 };
 
 #endif
