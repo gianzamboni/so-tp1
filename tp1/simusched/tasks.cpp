@@ -27,6 +27,7 @@ int dameRandEntre(int bmin, int bmax){
  	sleep(1);
  	cout << "rango [" << bmin << "; " << bmax << "]" << endl;
  	int module = (bmax - bmin);
+ 	cout << "module " << module << endl;
  	int nr;
  	if (module == 0) {
 		nr = bmin;
@@ -54,7 +55,10 @@ void TaskConsola(int pid, std::vector<int> params){ // params: n, bmin, bmax
 	int bmax = params[2];
 
 	for(int i = 0; i < n; i++){
-		uso_IO(pid, dameRandEntre(bmin, bmax));
+		int rnr = dameRandEntre(bmin, bmax);
+		cout << "random antes de pedir IO es: " << rnr << endl;
+		uso_IO(pid, rnr);
+		cout << "random antes de pedir IO es: " << rnr << endl;
 	};
 }
 
