@@ -58,7 +58,7 @@ void TaskConsola(int pid, std::vector<int> params){ // params: n, bmin, bmax
 		int rnr = dameRandEntre(bmin, bmax);
 		cout << "random antes de pedir IO es: " << rnr << endl;
 		uso_IO(pid, rnr);
-		cout << "random antes de pedir IO es: " << rnr << endl;
+		cout << "random despues de pedir IO es: " << rnr << endl;
 	};
 }
 
