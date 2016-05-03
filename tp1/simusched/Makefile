@@ -48,13 +48,13 @@ ejercicio5:
 ejercicio6:
 	./simusched -v ejercicio5.tsk 1 2 1 SchedFCFS 0 | python graphsched.py > ej6.png
 ejercicio7:
-	./simusched -v ejercicio7cpu.tsk 1 1 1 SchedMistery 2 5 20 | python graphsched.py > ej7_CPU.png
-	# ./simusched -v ejercicio7blk.tsk 1 1 1 SchedMistery 2 5 20 | python graphsched.py > ej7_BLK.png
-	./simusched -v ejercicio7alt.tsk 1 1 1 SchedMistery 2 5 20 | python graphsched.py > ej7_ALT1.png
-	./simusched -v ejercicio7alt.tsk 1 1 1 SchedMistery 20 2 5 | python graphsched.py > ej7_ALT2.png
-	./simusched -v ejercicio7alt.tsk 1 1 1 SchedNoMistery 20 2 5 | python graphsched.py > ej7_ALTNoMistery.png
+	./simusched -v ejercicio7cpu.tsk 1 1 1 SchedMistery 2 8 16 | python graphsched.py > ej7_CPU.png
+	./simusched -v ejercicio7cpu.tsk 1 1 1 SchedMistery 2 4 8 16 | python graphsched.py > ej7_CPU_4params.png
+	./simusched -v ejercicio7alt.tsk 1 1 1 SchedMistery 2 8 16 | python graphsched.py > ej7_ALT1.png
+	./simusched -v ejercicio7alt.tsk 1 1 1 SchedMistery 16 8 2 | python graphsched.py > ej7_ALT2.png
+	./simusched -v ejercicio7alt.tsk 1 1 1 SchedNoMistery 16 8 2 | python graphsched.py > ej7_ALTNoMistery.png
 ejercicio8:
 	./simusched -v ejercicio8.tsk 2 1 10 SchedRR2 4 8 | python graphsched.py > ej8RR2a.png
-	./simusched -v ejercicio8.tsk 2 1 10 SchedRR 4 8 | python graphsched.py > ej8RR1a.png
+	./simusched -v ejercicio8.tasks 2 1 10 SchedRR 4 8 | python graphsched.py > ej8RR1a.png
 	./simusched -v ejercicio8.tsk 2 1 10 SchedRR2 100 2 | python graphsched.py > ej8RR2b.png
 	./simusched -v ejercicio8.tsk 2 1 10 SchedRR 100 2 | python graphsched.py > ej8RR1b.png
